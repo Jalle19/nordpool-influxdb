@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "influx": "^5.5.1",
-    "nordpool": "^2.0.0"
+    "nordpool": "^2.1.1"
   }
 }
