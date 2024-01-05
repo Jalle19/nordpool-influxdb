@@ -11,21 +11,21 @@ for (const envVar of requiredEnvVars) {
   }
 }
 
-new nordpool.Prices().hourly({
-  area: process.env.AREA,
-  currency: process.env.CURRENCY,
-}, (error, results) => {
-  if (error !== null) {
-    throw new Error(`Failed to fetch Nordpool prices: ${error}`)
-  }
+const prices = new nordpool.Prices()
+
+;(async () => {
+  const results = await prices.hourly({
+    area: process.env.AREA,
+    currency: process.env.CURRENCY,
+  })
 
   const mappedResults = results.map((result) => {
     return {
       area: result.area,
-      date: result.date.unix(),
+      date: Date.parse(result.date) / 1000,
       value: result.value,
     }
   })
 
   console.log(JSON.stringify(mappedResults, null, 2))
-})
+})()
