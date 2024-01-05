@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sam Stenvall <neggelandia@ŋmail.com>",
+  "author": "Sam Stenvall <neggelandia@gmail.com>",
   "license": "GPL-3.0",
   "repository": {
     "url": "https://github.com/Jalle19/nordpool-influxdb.git"
   },
   "dependencies": {
     "influx": "^5.5.1",
-    "nordpool": "^2.0.0"
+    "nordpool": "^5.1.0"
   }
 }
