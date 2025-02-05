@@ -1,5 +1,3 @@
-const nordpool = require('nordpool')
-
 const requiredEnvVars = [
   'AREA',
   'CURRENCY',
@@ -11,19 +9,23 @@ for (const envVar of requiredEnvVars) {
   }
 }
 
-const prices = new nordpool.Prices()
+const now = new Date()
+const year = now.getFullYear()
+const month = now.getMonth() + 1
+const day = now.getDate()
+const currentDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 
-;(async () => {
-  const results = await prices.hourly({
-    area: process.env.AREA,
-    currency: process.env.CURRENCY,
-  })
+const dayAheadPricesUrl = `https://dataportal-api.nordpoolgroup.com/api/DayAheadPrices?date=${currentDate}&market=DayAhead&deliveryArea=${process.env.AREA}&currency=${process.env.CURRENCY}`
 
-  const mappedResults = results.map((result) => {
+void (async () => {
+  const response = await fetch(dayAheadPricesUrl)
+  const results = await response.json()
+
+  const mappedResults = results['multiAreaEntries'].map(entry => {
     return {
-      area: result.area,
-      date: Date.parse(result.date) / 1000,
-      value: result.value,
+      area: process.env.AREA,
+      date: Date.parse(entry['deliveryStart']) / 1000,
+      value: entry['entryPerArea'][process.env.AREA],
     }
   })
 
